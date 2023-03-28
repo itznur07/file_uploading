@@ -32,7 +32,7 @@ var upload = multer({
   },
   fileFilter: (req, file, cb) => {
     if (file.fieldname === "video") {
-      if (file.mimetype === "video/mp4" || file.mimetype === "video/mp3") {
+      if (file.mimetype === "video/mp4") {
         cb(null, true);
       } else {
         cb(new Error("only .mp4 and mp3 file allowed!"));
