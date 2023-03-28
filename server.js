@@ -2,18 +2,31 @@ const express = require("express");
 const port = 3000;
 const app = express();
 const multer = require("multer");
+const path = require("path");
 
-const UPOLAD_DIRC = "./uploads";
+const UPLOADS_FOLDER = "./uploads";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, UPOLAD_DIRC);
+    cb(null, UPLOADS_FOLDER);
   },
-  filename: (req, file, cb) => {},
+  filename: (req, file, cb) => {
+    // important file.pdf => important-file-4545.pdf
+    const fileExt = path.extname(file.originalname);
+    const fileName =
+      file.originalname
+        .replace(fileExt, "")
+        .toLowerCase()
+        .split(" ")
+        .join("-") +
+      "-" +
+      Date.now();
+    cb(null, fileName + fileExt);
+  },
 });
 
 var upload = multer({
-  dest: UPOLAD_DIRC,
+  storage: storage,
   limits: {
     fileSize: 1000000,
   },
